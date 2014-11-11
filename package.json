@@ -1,0 +1,29 @@
+{
+  "name": "spot-the-ball.js",
+  "version": "1.0.0",
+  "description": "A JavaScript implementation of the newspaper game Spot the Ball.",
+  "main": "spot-the-ball.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-banner": "^0.2.3",
+    "grunt-browserify": "^3.2.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-connect": "^0.8.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-markdown": "^0.6.1",
+    "grunt-umd": "^2.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "homepage": "http://tomyouds.github.io/spot-the-ball.js",
+  "author": "Tom Youds",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomyouds/spot-the-ball.js.git"
+  }
+}
