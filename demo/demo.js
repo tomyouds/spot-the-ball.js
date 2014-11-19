@@ -208,22 +208,24 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
       // Block all actions after guess is made
       this.complete = false;
 
-      // Create SVG elements
-      this.createElements();
+      this.preloadImages(function() {
+        // Create SVG elements
+        this.createElements();
 
-      // Add heatmap
-      this.addHeatMap();
+        // Add heatmap
+        this.addHeatMap();
 
-      if (this.options.id && localStorage.getItem(localStorageKey(this.options.id))) {
-        var savedGuess = JSON.parse(localStorage.getItem(localStorageKey(this.options.id)));
-        this.focus();
-        this.makeGuess(savedGuess.guess.x, savedGuess.guess.y, true);
-      }
+        if (this.options.id && localStorage.getItem(localStorageKey(this.options.id))) {
+          var savedGuess = JSON.parse(localStorage.getItem(localStorageKey(this.options.id)));
+          this.focus();
+          this.makeGuess(savedGuess.guess.x, savedGuess.guess.y, true);
+        }
 
-      this.element.className = (this.element.className + ' ' + (this.complete ? 'complete' : 'incomplete')).trim();
+        this.element.className = (this.element.className + ' ' + (this.complete ? 'complete' : 'incomplete')).trim();
 
-      // Listen for events
-      this.eventListeners();
+        // Listen for events
+        this.eventListeners();
+      }.bind(this));
     }
     else {
       element.innerHTML = 'You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to play.';
@@ -293,6 +295,26 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
 
 
       this.addLabel({x: this.options.size.x/2, y: this.options.size.y/2, 'text-anchor': 'middle', 'alignment-baseline': 'middle'}, label, this.overlay);
+    },
+
+    preloadImages: function(next) {
+      // Preload images
+      var preloadChallenge = document.createElement('img');
+      var preloadSolution = document.createElement('img');
+      var loaded = 0;
+
+      var preloaded = function() {
+        loaded++;
+        if (loaded >= 2) {
+          next();
+        }
+      };
+
+      preloadChallenge.onload = preloaded;
+      preloadSolution.onload = preloaded;
+
+      preloadChallenge.src = this.options.challengeImage;
+      preloadSolution.src = this.options.solutionImage;
     },
 
 
