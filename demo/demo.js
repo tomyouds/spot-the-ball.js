@@ -36,7 +36,7 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
 }(this, function () {
 
   var GUESS_COLORS = [
-    'blue',
+    'skyblue',
     'yellow',
     'orange'
   ];
@@ -208,6 +208,14 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
       // Block all actions after guess is made
       this.complete = false;
 
+      applyCSS(this.element, {
+        'padding-top': (this.options.size.y/this.options.size.x)*100 + '%',
+        width: '100%',
+        display: 'block',
+        height: 'auto',
+        position: 'relative'
+      });
+
       this.preloadImages(function() {
         // Create SVG elements
         this.createElements();
@@ -219,6 +227,15 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
           var savedGuess = JSON.parse(localStorage.getItem(localStorageKey(this.options.id)));
           this.focus();
           this.makeGuess(savedGuess.guess.x, savedGuess.guess.y, true);
+        }
+
+        // Display bootstrapped guesses
+        this.guesses = [];
+
+        if (this.options.guesses) {
+          this.options.guesses.forEach(function(guess, i) {
+            this.displayGuess(guess.x, guess.y, GUESS_COLORS[i%GUESS_COLORS.length], false);
+          }, this);
         }
 
         this.element.className = (this.element.className + ' ' + (this.complete ? 'complete' : 'incomplete')).trim();
@@ -241,15 +258,6 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
         viewBox: '0 0 ' + this.options.size.x + ' ' + this.options.size.y
       });
 
-      var percent = (this.options.size.y/this.options.size.x)*100;
-      applyCSS(this.container.parent, {
-        'padding-top': percent + '%',
-        width: '100%',
-        display: 'block',
-        height: 'auto',
-        position: 'relative'
-      });
-
       this.container.style({
         width: '100%',
         height: '100%',
@@ -263,6 +271,16 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
 
       this.challengeImage = this.container.image(this.options.challengeImage, this.options.size.x, this.options.size.y).attr('class', 'challenge');
       this.solutionImage = this.container.image(this.options.solutionImage, this.options.size.x, this.options.size.y).attr('class', 'solution').hide();
+
+      // Fix for moving images on opacity change
+      [this.challengeImage, this.solutionImage].forEach(function(img) {
+        img.style({
+          '-webkit-backface-visibility': 'hidden',
+          'backface-visibility': 'hidden',
+          '-webkit-transform': 'rotate(0)',
+          'transform': 'rotate(0)'
+        });
+      });
 
       this.element.appendChild(this.challengeImage.node);
       this.element.appendChild(this.solutionImage.node);
@@ -454,13 +472,17 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
       }
     },
 
+    calculateDistance: function(x, y) {
+      return Math.round(Math.sqrt(Math.pow(this.options.solution.x-x, 2)+Math.pow(this.options.solution.y-y, 2)));
+    },
+
     makeGuess: function(x, y, previous) {
       if (this.complete) return;
 
       var guess = {x: x, y: y};
 
       // Check accuracy
-      var distance = Math.round(Math.sqrt(Math.pow(this.options.solution.x-guess.x, 2)+Math.pow(this.options.solution.y-guess.y, 2)));
+      var distance = this.calculateDistance(x, y);
 
       var correct = distance < this.options.size.ball;
 
@@ -475,15 +497,14 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
 
       this.heatMap.style({opacity: 0.75});
 
-      // Display bootstrapped guesses
-      if (this.options.guesses && this.options.guesses.length) {
-        this.options.guesses.forEach(function(guess, i) {
-          this.displayGuess(guess.x, guess.y, GUESS_COLORS[i%GUESS_COLORS.length], guess.label);
-        }, this);
+      if (this.guesses && this.guesses.length) {
+        this.guesses.forEach(function(guess) {
+          guess.style({opacity: 1});
+        });
       }
 
       // Display actual guess
-      this.displayGuess(guess.x, guess.y, correct ? 'limegreen' : 'red');
+      this.displayGuess(guess.x, guess.y, correct ? 'limegreen' : 'red', true);
 
       if (previous) {
         this.container.attr('class', 'complete');
@@ -498,48 +519,24 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
       if (this.options.onGuess) this.options.onGuess.call(this, guess, distance);
     },
 
-    displayGuess: function(x, y, color, label) {
-      if (!label) {
+    displayGuess: function(x, y, color, cursor) {
+      if (cursor) {
         this.cursor.attr({
           'class': 'guess',
           cx: x,
           cy: y
         }).style('stroke', color);
       }
-
-      if (label) {
-        this.container.circle(this.options.size.ball-8).attr({
-          'class': 'cursor',
+      else {
+        this.guesses.push(this.container.circle(this.options.size.ball-8).attr({
+          'class': 'guess',
           fill: 'none',
           'stroke-width': '8',
-          stroke: 'skyblue',
+          stroke: color,
           opacity: 0.75,
           cx: x,
           cy: y
-        });
-
-        var pos;
-        var labelPosition = 'left';
-
-        if (x < this.options.size.ball) {
-          labelPosition = 'right';
-        }
-
-        switch(labelPosition) {
-          case 'left':
-            pos = {x: x-(this.options.size.ball/2)-20, y: y, 'text-anchor': 'end'};
-            break;
-          case 'right':
-            pos = {x: x+(this.options.size.ball/2)+20, y: y, 'text-anchor': 'start'};
-            break;
-          case 'below':
-            pos = {x: x, y: y+(this.options.size.ball), 'text-anchor': 'middle'};
-            break;
-          default:
-            pos = {x: x, y: y-(this.options.size.ball), 'text-anchor': 'middle'};
-        }
-
-        this.addLabel(pos, label);
+        }).hide());
       }
     },
 

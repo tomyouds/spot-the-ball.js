@@ -1,5 +1,5 @@
 var GUESS_COLORS = [
-  'blue',
+  'skyblue',
   'yellow',
   'orange'
 ];
