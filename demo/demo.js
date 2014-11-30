@@ -355,6 +355,10 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
         window.clearTimeout(this.resetTimer);
         this.removeConfirmBox();
         this.focus();
+
+        var point = this.scalePoint(eventCoordinates(event.touches[0]));
+        this.cursor.move(point.x, point.y);
+
         event.preventDefault();
       }).bind(this));
 
@@ -362,8 +366,8 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
         if (this.complete) return;
 
         var point = this.scalePoint(eventCoordinates(event.touches[0]));
-
         this.cursor.move(point.x, point.y);
+
         event.preventDefault();
       }).bind(this));
 
@@ -371,7 +375,6 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
         if (this.complete) return;
 
         var point = this.scalePoint(eventCoordinates(event.changedTouches[0]));
-
         this.cursor.move(point.x, point.y);
 
         // Moved out of view
