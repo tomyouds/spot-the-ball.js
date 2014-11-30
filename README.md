@@ -8,7 +8,10 @@ Spot the ball is a game where players guess the position of the ball after viewi
 ## Demo
 A demo is available [here](http://tomyouds.github.io/spot-the-ball.js).
 
-More examples with real guess data can be found on [MLSsoccer.com](http://www.mlssoccer.com/news/article/2014/11/03/spot-ball-week-one)
+More examples with real guess data can be found on MLSsoccer.com:
+- [November 4 2014](http://www.mlssoccer.com/news/article/2014/11/03/spot-ball-week-one)
+- [November 11 2014](http://www.mlssoccer.com/news/article/2014/11/11/spot-ball-back-popular-demand-mls-cup-playoff-conference-semifinal-second-le)
+- [November 25th 2014](http://www.mlssoccer.com/news/article/2014/11/24/spot-ball-time-take-another-stab-mlssoccercom-game-keeps-you-guessing)
 
 ## Download
 [spot-the-ball.js 1.0.0](https://raw.github.com/tomyouds/spot-the-ball.js/master/spot-the-ball.js)

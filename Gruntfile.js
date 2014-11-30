@@ -78,7 +78,7 @@ module.exports = function(grunt) {
         options: {
           template: 'demo/template.html',
           preCompile: function(src, context) {
-            var demoContent = '<div id="spot-the-ball-demo"></div><p>Photo by <a href="https://secure.flickr.com/photos/16638697@N00/4841859880" target="_blank">Ed Schipul</a>, licensed under the <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank">Creative Commons Attribution-Share Alike 2.0</a> license.</p>';
+            var demoContent = '<div id="spot-the-ball-demo"></div><em>(Photo by <a href="https://secure.flickr.com/photos/16638697@N00/4841859880" target="_blank">Ed Schipul</a>, licensed under the <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank">Creative Commons Attribution-Share Alike 2.0</a> license.)</em>';
             return src.replace('A demo is available [here](http://tomyouds.github.io/spot-the-ball.js).', demoContent);
           }
         },
