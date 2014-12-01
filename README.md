@@ -14,7 +14,7 @@ More examples with real guess data can be found on MLSsoccer.com:
 - [November 25th 2014](http://www.mlssoccer.com/news/article/2014/11/24/spot-ball-time-take-another-stab-mlssoccercom-game-keeps-you-guessing)
 
 ## Download
-[spot-the-ball.js 1.0.0](https://raw.github.com/tomyouds/spot-the-ball.js/master/spot-the-ball.js)
+[spot-the-ball.js 1.0.1](https://raw.github.com/tomyouds/spot-the-ball.js/master/spot-the-ball.js)
 
 ## Usage
 ``` js

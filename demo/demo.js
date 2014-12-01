@@ -12,7 +12,7 @@ new SpotTheBall(document.getElementById('spot-the-ball-demo'), {
 });
 },{"./spot-the-ball":2}],2:[function(require,module,exports){
 /*!
- * spot-the-ball.js v1.0.0
+ * spot-the-ball.js v1.0.1
  * http://tomyouds.github.io/spot-the-ball.js
  *
  * Copyright (c) 2014 Tom Youds
